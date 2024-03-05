@@ -32,7 +32,7 @@ public class Cart {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    @Column(name = "total", length = 20, precision = 2)
+    @Column(name = "total", scale = 2, precision = 20)
     private BigDecimal total;
 
     @OneToMany(mappedBy = "cart")
