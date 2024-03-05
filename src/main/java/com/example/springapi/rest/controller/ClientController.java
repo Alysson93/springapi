@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,7 +38,7 @@ public class ClientController {
     public Client getById(@PathVariable Integer id) {
         Optional<Client> client = repository.findById(id);
         if (client.isPresent()) return client.get();
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado.");
     }
 
     @PostMapping
@@ -43,6 +46,17 @@ public class ClientController {
     public Client post(@RequestBody Client client) {
         Client savedClient = repository.save(client);
         return savedClient;
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
+        Optional<Client> client = repository.findById(id);
+        if (client.isPresent()) {
+            repository.delete(client.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado.");
+        }
     }
 
    
