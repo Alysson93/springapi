@@ -23,8 +23,11 @@ public class Client {
     @Column(name = "id", length = 100)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 100)
     private String name;
+
+    @Column(name = "cpf", length = 11)
+    private String cpf;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client")

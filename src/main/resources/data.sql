@@ -1,6 +1,7 @@
 create table clients(
     id integer primary key auto_increment,
-    name varchar(100)
+    name varchar(100),
+    cpf varchar(11)
 );
 
 create table products(
