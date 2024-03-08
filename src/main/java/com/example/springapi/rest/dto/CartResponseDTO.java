@@ -19,6 +19,7 @@ public class CartResponseDTO {
     private String clientName;
     private BigDecimal total;
     private String createdAt;
+    private String status;
     private List<ItemResponseDTO> items;
 
 }

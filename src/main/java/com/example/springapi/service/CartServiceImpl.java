@@ -11,10 +11,12 @@ import com.example.springapi.domain.entity.Cart;
 import com.example.springapi.domain.entity.Client;
 import com.example.springapi.domain.entity.Item;
 import com.example.springapi.domain.entity.Product;
+import com.example.springapi.domain.enums.Status;
 import com.example.springapi.domain.repository.CartRepository;
 import com.example.springapi.domain.repository.ClientRepository;
 import com.example.springapi.domain.repository.ItemRepository;
 import com.example.springapi.domain.repository.ProductRepository;
+import com.example.springapi.exceptions.CartNotFoundException;
 import com.example.springapi.exceptions.RegraNegocioException;
 import com.example.springapi.rest.dto.CartDTO;
 import com.example.springapi.rest.dto.ItemDTO;
@@ -37,6 +39,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = new Cart();
         cart.setTotal(dto.getTotal());
         cart.setCreatedAt(LocalDate.now());
+        cart.setStatus(Status.REALIZADO);
 
         Integer clientId = dto.getClient();
         Client client = clientRepository.findById(clientId).orElseThrow(
@@ -56,6 +59,15 @@ public class CartServiceImpl implements CartService {
     public Optional<Cart> getCart(Integer id) {
         Optional<Cart> cart = repository.findByIdFetchItems(id);
         return cart;
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(Integer id, Status status) {
+        repository.findById(id).map(cart -> {
+            cart.setStatus(status);
+            return repository.save(cart);
+        }).orElseThrow(() -> new CartNotFoundException());
     }
 
     private List<Item> convertItems(Cart cart, List<ItemDTO> dto) {

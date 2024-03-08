@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +20,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.springapi.domain.entity.Cart;
 import com.example.springapi.domain.entity.Item;
+import com.example.springapi.domain.enums.Status;
 import com.example.springapi.rest.dto.CartDTO;
 import com.example.springapi.rest.dto.CartResponseDTO;
+import com.example.springapi.rest.dto.CartStatusDTO;
 import com.example.springapi.rest.dto.ItemResponseDTO;
 import com.example.springapi.service.CartService;
 
@@ -45,6 +48,13 @@ public class CartController {
         return cart.getId();
     }
 
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id, @RequestBody CartStatusDTO dto) {
+        String status = dto.getStatus();
+        service.updateStatus(id, Status.valueOf(status));
+    }
+
 
     private CartResponseDTO convert(Cart cart) {
         return CartResponseDTO.builder()
@@ -53,6 +63,7 @@ public class CartController {
         .clientCpf(cart.getClient().getCpf())
         .clientName(cart.getClient().getName())
         .total(cart.getTotal())
+        .status(cart.getStatus().name())
         .items(convertItems(cart.getItems()))
         .build();
     }
