@@ -1,5 +1,7 @@
 package com.example.springapi.domain.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,5 +22,8 @@ public class Product {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "price", scale = 2, precision = 20)
+    private BigDecimal price;
 
 }

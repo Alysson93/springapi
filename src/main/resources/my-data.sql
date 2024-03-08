@@ -1,3 +1,5 @@
+-- data.sql
+
 create table clients(
     id integer primary key auto_increment,
     name varchar(100),
@@ -6,7 +8,8 @@ create table clients(
 
 create table products(
     id integer primary key auto_increment,
-    description varchar(100)
+    description varchar(100),
+    price numeric(20, 2)
 );
 
 create table carts(
