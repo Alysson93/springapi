@@ -22,6 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.springapi.domain.entity.Client;
 import com.example.springapi.domain.repository.ClientRepository;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/clients")
@@ -51,7 +53,7 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Client post(@RequestBody Client client) {
+    public Client post(@RequestBody @Valid Client client) {
         Client savedClient = repository.save(client);
         return savedClient;
     }
@@ -69,7 +71,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void put(@PathVariable Integer id, @RequestBody Client client) {
+    public void put(@PathVariable Integer id, @RequestBody @Valid Client client) {
         Optional<Client> c = repository.findById(id);
         if (c.isPresent()) {
             client.setId(c.get().getId());

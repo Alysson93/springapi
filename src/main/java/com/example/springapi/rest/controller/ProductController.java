@@ -20,6 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.springapi.domain.entity.Product;
 import com.example.springapi.domain.repository.ProductRepository;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -50,7 +53,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product post(@RequestBody Product product) {
+    public Product post(@RequestBody @Valid Product product) {
         Product p = repository.save(product);
         return p;
     }
@@ -65,7 +68,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void put(@PathVariable Integer id, @RequestBody Product product) {
+    public void put(@PathVariable Integer id, @RequestBody @Valid Product product) {
         Optional<Product> p = repository.findById(id);
         if (p.isPresent()) {
             product.setId(p.get().getId());
